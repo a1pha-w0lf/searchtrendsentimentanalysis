@@ -22,7 +22,6 @@ keyring==23.1.0
 lockfile==0.12.2
 mock==4.0.3
 mypy_extensions==0.4.3
-newspaper==0.1.0.7
 ordereddict==1.1
 PasteScript==3.2.1
 protobuf==3.17.3
