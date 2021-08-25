@@ -1,7 +1,6 @@
 from googlesearch import search
 from textblob import TextBlob
 from newspaper import Article
-#nltk.download('punkt')
 from newspaper import Config
 num_page = 3
 
