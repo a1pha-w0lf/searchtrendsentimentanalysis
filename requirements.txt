@@ -30,6 +30,4 @@ setproctitle==1.2.2
 simplejson==3.17.5
 tornado==6.1
 typing_extensions==3.10.0.0
-unicodedata2==13.0.0.post2
-wincertstore==0.2.1
-zipp==3.5.0
+
