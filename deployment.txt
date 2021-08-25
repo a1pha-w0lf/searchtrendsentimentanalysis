@@ -1,0 +1,8 @@
+tried pip freeze for requirements but that didnt work, since it only gave the requirements
+which were pip installed in venv. 
+so pip installed pipreqs which is supposed to collect all requirements
+used in current folder. But that had a bug as well.
+So finally figured out that we had to use iso-8859-1 encoding
+pipreqs --encoding=iso-8859-1 ./
+
+even encoding=-utf8 didnt work

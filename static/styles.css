@@ -1,0 +1,72 @@
+.rest{
+    background-color: beige;
+}
+
+.body{
+    background-color: #3cc7b7;
+}
+
+.trend_diag{
+    display: inline-block;
+}
+.center {
+    margin:0 auto;
+    width:50%;
+    text-align:center;
+  }
+h1{
+    text-align: center;
+}
+.region{
+    font-size:1rem;
+
+}
+@media (max-width: 480px){
+  
+    .custom-brand{
+      float: left;
+      width: 160px;
+      overflow: hidden;
+      clear: left;
+      text-align: right;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+
+  ul {
+    margin: 20px;
+}
+
+.input-color {
+    position: relative;
+}
+.input-color input {
+    padding-left: 20px;
+}
+.input-color .color-box-red {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    background-color: #ccc;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    background-color: red;
+}
+
+.input-color .color-box-green {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    background-color: #ccc;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+    background-color: green;
+}
+
+.footer {
+    flex-shrink: 0;
+  }
+

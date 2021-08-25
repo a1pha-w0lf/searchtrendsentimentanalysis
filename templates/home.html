@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link rel = "stylesheet" href = {{ url_for('static', filename="styles.css") }}>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        
+  
+        <script src="//unpkg.com/three"></script>
+        <script src="//unpkg.com/three/examples/js/controls/TrackballControls.js"></script>
+        <script src="//unpkg.com/three-globe"></script>
+        <script>
+            function myFunction() {
+              alert("Sentiment is only available for searched keyword");
+            }
+        </script>
+    </head>
+    <body style = "background-color: #aad8d3;">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+            <a class = "navbar-brand custom-brand" href="/">Web Usage Mining for Identifying Consumer Trends</a>
+            
+
+            <div class = "collapse navbar-collapse" id = "navbarTogglerDemo02">
+                <ul class = "navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href = "/home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href = "javascript:myFunction()" disabled>Sentiment</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href = "/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href = "/glb">Global</a>
+                    </li>
+                </ul>
+                
+            </div>
+            <form method = "POST" action = "/search" class="form-inline my-2 my-0" >
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name = "search_kw" autocomplete="off">
+                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            <button class = "navbar-toggler" data-toggle = "collapse" data-target="#navbarTogglerDemo02" aria-controls = "navbarTogglerDemo02" aria-expanded="false" aria-label = "Togglenavigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </nav>
+
+        
+        <div id="globeViz"style="max-height: 80%; color:rgb(170,216,211); width:100% position:absolute">
+
+        </div>
+            
+        <script>
+        // Gen random data
+        const N = 1500;
+        const gData = [...Array(N).keys()].map(() => ({
+            lat: (Math.random() - 0.5) * 180,
+            lng: (Math.random() - 0.5) * 360,
+            size: Math.random() / 3,
+            color: ['red', 'green'][Math.round(Math.random() * 3)]
+        }));
+    
+        const Globe = new ThreeGlobe()
+            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
+            .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
+            .pointsData(gData)
+            .pointAltitude('size')
+            .pointColor('color');
+    
+        setTimeout(() => {
+            Globe.pointsData(gData);
+        }, 1000);
+    
+        // Setup renderer
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(0.9*window.innerWidth, 0.8*window.innerHeight);
+        renderer.setClearColor( 0xaad8d3 );
+        document.getElementById('globeViz').appendChild(renderer.domElement);
+    
+        // Setup scene
+        const scene = new THREE.Scene();
+        scene.add(Globe);
+        scene.add(new THREE.AmbientLight(0xbbbbbb));
+        scene.add(new THREE.DirectionalLight(0xffffff, 0.6));
+    
+        // Setup camera
+        const camera = new THREE.PerspectiveCamera(70, 2, 1, 1000);
+        //camera.aspect = window.innerWidth/window.innerHeight;
+        camera.updateProjectionMatrix();
+        camera.position.z = 350;
+    
+        // Add camera controls
+        const tbControls = new THREE.TrackballControls(camera, renderer.domElement);
+        tbControls.minDistance = 300;
+        
+        tbControls.rotateSpeed = 5;
+        tbControls.zoomSpeed = 0.8;
+    
+        // Kick-off renderer
+        (function animate() { // IIFE
+            // Frame cycle
+            tbControls.update();
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        })();
+        
+        function resizeCanvasToDisplaySize() {
+            const canvas = renderer.domElement;
+            // look up the size the canvas is being displayed
+            const width = canvas.clientWidth;
+            const height = canvas.clientHeight;
+
+            // adjust displayBuffer size to match
+            if (canvas.width !== width || canvas.height !== height) {
+                // you must pass false here or three.js sadly fights the browser
+                renderer.setSize(width, height, false);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+
+                // update any render target sizes here
+            }
+        }
+
+        </script>
+    
+    <div class = "global" style="color:rgb(170,216,211); padding:2rem;">
+        <a href = "/glb"  class="btn btn-dark btn-lg" role = "button" style = "margin:0 auto; display:block;">Global Trends</a>
+    </div>
+
+
+        <h1 class = "center"> Or Select Region</h1>\
+
+        <div class="text-center">
+            <form method="POST" action = "/region" style = "display:inline; padding:5%;" class="center">
+                <label for="country">Country</label>      
+                      
+                <select id="country" name="country"  style = "display:inline;">
+                    <option value="argentina">Argentina</option>
+                    <option value="australia">Australia</option>
+                    <option value="austria">Austria</option>
+                    <option value="belgium">Belgium</option>
+                    <option value="brazil">Brazil</option>
+                    <option value="canada">Canada</option>
+                    <option value="chile">Chile</option>
+                    <option value="colombia">Colombia</option>
+                    <option value="denmark">Denmark</option>
+                    <option value="finland">Finland</option>
+                    <option value="france">France</option>
+                    <option value="germany">Germany</option>
+                    <option value="hong_kong">Hong Kong</option>
+                    <option value="hungary">Hungary</option>
+                    <option value="india">India</option>
+                    <option value="indonesia">Indonesia</option>
+                    <option value="ireland">Ireland</option>
+                    <option value="israel">Israel</option>
+                    <option value="italy">Italy</option>
+                    <option value="japan">Japan</option>
+                    <option value="kenya">Kenya</option>
+                    <option value="malaysia">Malaysia</option>
+                    <option value="mexico">Mexico</option>
+                    <option value="netherlands">Netherlands</option>
+                    <option value="new zealand">New Zealand</option>
+                    <option value="nigeria">Nigeria</option>
+                    <option value="norway">Norway</option>
+                    <option value="philippines">Philippines</option>
+                    <option value="poland">Poland</option>
+                    <option value="portugal">Portugal</option>
+                    <option value="romania">Romania</option>
+                    <option value="singapore">Singapore</option>
+                    
+                    <option value="south_africa">South Africa</option>
+                    
+                    <option value="sweden">Sweden</option>
+                    <option value="switzerland">Switzerland</option>
+                    
+                    <option value="taiwan">Taiwan, Province of China</option>
+                    
+              
+                    
+                    <option value="united_kingdom">United Kingdom</option>
+                    <option value="united_states">United States</option>
+                    
+                </select>
+                <input type = "submit" class="btn btn-lg btn-dark" style="display:inline">
+              </form>
+        </div>
+        
+
+
+    <div class="footer" style = "background-color: #d8e3e7; height:10rem; margin-top:5%">
+        <p style="margin:0; text-align: center;">This is a project made for software engineering by Rohan Sai, Ayan Chandra, Amit Kumar</p>
+        <p style="margin:0; text-align: center;"> SOFTWARE ENGINEERING PROJECT</p>
+    </div>
+    </body>
+</html>
