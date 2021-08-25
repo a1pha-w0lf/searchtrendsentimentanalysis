@@ -1,6 +1,5 @@
 from pytrends.request import TrendReq
 import matplotlib.pyplot as plt
-import mpld3
 
 pytrends = TrendReq( timeout=(100,250))
 #pytrends.top_charts(2021, hl='en-US', tz=360, geo='GLOBAL')

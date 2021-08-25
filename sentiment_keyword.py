@@ -1,6 +1,5 @@
 from googlesearch import search
 from textblob import TextBlob
-import nltk
 from newspaper import Article
 #nltk.download('punkt')
 from newspaper import Config
